@@ -1,16 +1,22 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:formz/formz.dart';
+import 'package:teslo_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:teslo_app/features/shared/shared.dart';
 
 //! 3 - StateNotifierProvider - consume afuera
 final loginFormProvider =
     StateNotifierProvider.autoDispose<LoginformNotifier, LoginFormState>((ref) {
-      return LoginformNotifier();
+      final loginUserCallback = ref.watch(authProvider.notifier).loginUser;
+
+      return LoginformNotifier(loginUserCallback: loginUserCallback);
     });
 
 //! 2 - Como implementamos un notifier
 class LoginformNotifier extends StateNotifier<LoginFormState> {
-  LoginformNotifier() : super(LoginFormState());
+  final Function(String, String) loginUserCallback;
+
+  LoginformNotifier({required this.loginUserCallback})
+    : super(LoginFormState());
 
   onEmailChange(String value) {
     final newEmail = Email.dirty(value);
@@ -28,12 +34,12 @@ class LoginformNotifier extends StateNotifier<LoginFormState> {
     );
   }
 
-  onFormSubmit() {
+  onFormSubmit() async {
     _touchEveryField();
 
     if (!state.isValid) return;
 
-    print(state);
+    await loginUserCallback(state.email.value, state.password.value);
   }
 
   _touchEveryField() {

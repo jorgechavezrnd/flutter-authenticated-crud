@@ -2,20 +2,18 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:teslo_app/features/auth/domain/domain.dart';
 import 'package:teslo_app/features/auth/infrastructure/infrastructure.dart';
 
-final authProvider = StateNotifierProvider.autoDispose<AuthNotifier, AuthState>(
-  (ref) {
-    final authRepository = AuthRepositoryImpl();
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  final authRepository = AuthRepositoryImpl();
 
-    return AuthNotifier(authRepository: authRepository);
-  },
-);
+  return AuthNotifier(authRepository: authRepository);
+});
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
 
   AuthNotifier({required this.authRepository}) : super(AuthState());
 
-  void loginUser(String email, String password) async {
+  Future<void> loginUser(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
     try {
