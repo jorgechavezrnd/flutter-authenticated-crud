@@ -3,9 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:teslo_app/features/auth/auth.dart';
 import 'package:teslo_app/features/products/products.dart';
 
+import 'app_router_notifier.dart';
+
 final goRouterProvider = Provider((ref) {
+  final goRouterNotifier = ref.read(goRouterNotifierProvider);
+
   return GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/login',
+    refreshListenable: goRouterNotifier,
     routes: [
       ///* Primera pantalla
       GoRoute(
@@ -25,6 +30,8 @@ final goRouterProvider = Provider((ref) {
     ],
 
     redirect: (context, state) {
+      print(state.matchedLocation);
+
       // return '/';
       return null;
     },
