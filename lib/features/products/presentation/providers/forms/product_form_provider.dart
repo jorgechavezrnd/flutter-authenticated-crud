@@ -1,13 +1,24 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:formz/formz.dart';
+
 import 'package:teslo_app/config/constants/environment.dart';
 import 'package:teslo_app/features/products/domain/domain.dart';
 import 'package:teslo_app/features/shared/shared.dart';
 
-class ProductformNotifier extends StateNotifier<ProductFormState> {
+final productFormProvider = StateNotifierProvider.autoDispose
+    .family<ProductFormNotifier, ProductFormState, Product>((ref, product) {
+      //TODO: createUpdateCallback
+
+      return ProductFormNotifier(
+        product: product,
+        //TODO: onSubmitCallback: createUpdateCallback
+      );
+    });
+
+class ProductFormNotifier extends StateNotifier<ProductFormState> {
   final void Function(Map<String, dynamic> productLike)? onSubmitCallback;
 
-  ProductformNotifier({this.onSubmitCallback, required Product product})
+  ProductFormNotifier({this.onSubmitCallback, required Product product})
     : super(
         ProductFormState(
           id: product.id,
