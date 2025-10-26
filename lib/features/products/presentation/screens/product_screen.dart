@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:teslo_app/features/products/domain/domain.dart';
-import 'package:teslo_app/features/products/presentation/providers/product_provider.dart';
 import 'package:teslo_app/features/products/presentation/providers/providers.dart';
 import 'package:teslo_app/features/shared/widgets/widgets.dart';
 
