@@ -121,7 +121,7 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     );
   }
 
-  void onSizeChanged(List<String> sizes) {
+  void onSizesChanged(List<String> sizes) {
     state = state.copyWith(sizes: sizes);
   }
 
