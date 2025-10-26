@@ -109,7 +109,7 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     );
   }
 
-  void onStockChanged(int value) {
+  void onInStockChanged(int value) {
     state = state.copyWith(
       inStock: Stock.dirty(value),
       isFormValid: Formz.validate([
