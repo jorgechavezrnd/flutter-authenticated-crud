@@ -3,20 +3,24 @@ import 'package:formz/formz.dart';
 
 import 'package:teslo_app/config/constants/environment.dart';
 import 'package:teslo_app/features/products/domain/domain.dart';
+import 'package:teslo_app/features/products/presentation/providers/providers.dart';
 import 'package:teslo_app/features/shared/shared.dart';
 
 final productFormProvider = StateNotifierProvider.autoDispose
     .family<ProductFormNotifier, ProductFormState, Product>((ref, product) {
-      //TODO: createUpdateCallback
+      final createUpdateCallback = ref
+          .watch(productsRepositoryProvider)
+          .createUpdateProduct;
 
       return ProductFormNotifier(
         product: product,
-        //TODO: onSubmitCallback: createUpdateCallback
+        onSubmitCallback: createUpdateCallback,
       );
     });
 
 class ProductFormNotifier extends StateNotifier<ProductFormState> {
-  final void Function(Map<String, dynamic> productLike)? onSubmitCallback;
+  final Future<Product> Function(Map<String, dynamic> productLike)?
+  onSubmitCallback;
 
   ProductFormNotifier({this.onSubmitCallback, required Product product})
     : super(
@@ -38,8 +42,7 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     _touchedEverything();
     if (!state.isFormValid) return false;
 
-    //TODO: regresar
-    // if (onSubmitCallback == null) return false;
+    if (onSubmitCallback == null) return false;
 
     final productLike = {
       'id': state.id,
@@ -59,8 +62,13 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
           .toList(),
     };
 
-    return true;
-    // TODO: Llamar on submit callback
+    try {
+      await onSubmitCallback!(productLike);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   void _touchedEverything() {
