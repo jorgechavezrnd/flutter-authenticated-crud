@@ -43,7 +43,9 @@ class ProductScreen extends ConsumerWidget {
               .onFormSubmit()
               .then((value) {
                 if (!value) return;
-                showSnackbar(context);
+                if (context.mounted) {
+                  showSnackbar(context);
+                }
               });
         },
         child: const Icon(Icons.save_as_outlined),
