@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:teslo_app/features/products/domain/domain.dart';
 import 'package:teslo_app/features/products/presentation/providers/providers.dart';
-import 'package:teslo_app/features/shared/widgets/widgets.dart';
+import 'package:teslo_app/features/shared/shared.dart';
 
 class ProductScreen extends ConsumerWidget {
   final String productId;
@@ -28,7 +28,22 @@ class ProductScreen extends ConsumerWidget {
           title: const Text('Editar Producto'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                final photoPath = await CameraGalleryServiceImpl()
+                    .selectPhoto();
+                if (photoPath == null) return;
+
+                photoPath;
+              },
+              icon: const Icon(Icons.photo_library_outlined),
+            ),
+            IconButton(
+              onPressed: () async {
+                final photoPath = await CameraGalleryServiceImpl().takePhoto();
+                if (photoPath == null) return;
+
+                photoPath;
+              },
               icon: const Icon(Icons.camera_alt_outlined),
             ),
           ],
